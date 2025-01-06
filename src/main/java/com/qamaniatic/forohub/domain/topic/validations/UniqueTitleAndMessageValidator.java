@@ -15,10 +15,10 @@ public class UniqueTitleAndMessageValidator implements TopicValidation {
     @Override
     public void validate(TopicCreateData topicCreateData) {
         if (topicRepository.existsByTitle(topicCreateData.title())) {
-            throw new ValidationException("El título del tópico ya existe.");
+            throw new ValidationException("El título del tópico ya existe.", "title");
         }
         if (topicRepository.existsByMessage(topicCreateData.message())) {
-            throw new ValidationException("El mensaje del tópico ya existe.");
+            throw new ValidationException("El mensaje del tópico ya existe.", "message");
         }
     }
 }

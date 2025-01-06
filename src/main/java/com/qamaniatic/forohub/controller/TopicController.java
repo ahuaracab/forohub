@@ -1,10 +1,10 @@
 package com.qamaniatic.forohub.controller;
 
+import com.qamaniatic.forohub.domain.ValidationException;
 import com.qamaniatic.forohub.domain.topic.*;
 import com.qamaniatic.forohub.domain.topic.validations.UniqueTitleAndMessageValidator;
 import com.qamaniatic.forohub.domain.user.User;
 import com.qamaniatic.forohub.domain.user.UserRepository;
-import com.qamaniatic.forohub.infra.error.ErrorHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -35,7 +35,7 @@ public class TopicController {
     @PostMapping
     public ResponseEntity<TopicResponseData> createTopic(@RequestBody @Valid TopicCreateData topicCreateData, UriComponentsBuilder uriComponentsBuilder) {
         uniqueTitleAndMessageValidator.validate(topicCreateData);
-        User user = userRepository.findById(topicCreateData.userId()).orElseThrow(() -> new ErrorHandler.UserNotFoundException("Usuario no encontrado"));
+        User user = userRepository.findById(topicCreateData.userId()).orElseThrow(() -> new ValidationException("Usuario no encontrado", "userId"));
         Topic topic = topicRepository.save(new Topic(topicCreateData, user));
         TopicResponseData topicResponseData = new TopicResponseData(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getCreationDate(), topic.getStatus(), topic.getUser().getId());
 
@@ -70,5 +70,4 @@ public class TopicController {
         var topicResponseData = new TopicResponseData(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getCreationDate(), topic.getStatus(), topic.getUser().getId());
         return ResponseEntity.ok(topicResponseData);
     }
-
 }
