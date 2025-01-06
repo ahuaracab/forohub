@@ -1,6 +1,8 @@
 package com.qamaniatic.forohub.controller;
 
 import com.qamaniatic.forohub.domain.topic.*;
+import com.qamaniatic.forohub.domain.user.User;
+import com.qamaniatic.forohub.domain.user.UserRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -22,14 +24,17 @@ public class TopicController {
     @Autowired
     private TopicRepository topicRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping
     public ResponseEntity<TopicResponseData> createTopic(@RequestBody @Valid TopicCreateData topicCreateData, UriComponentsBuilder uriComponentsBuilder) {
-        Topic topic = topicRepository.save(new Topic(topicCreateData));
-        TopicResponseData topicResponseData = new TopicResponseData(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getCreationDate(), topic.getStatus());
+        User user = userRepository.findById(topicCreateData.userId()).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Topic topic = topicRepository.save(new Topic(topicCreateData, user));
+        TopicResponseData topicResponseData = new TopicResponseData(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getCreationDate(), topic.getStatus(), topic.getUser().getId());
 
         URI url = uriComponentsBuilder.path("/topics/{id}").buildAndExpand(topic.getId()).toUri();
         return ResponseEntity.created(url).body(topicResponseData);
-
     }
 
     @GetMapping
@@ -42,10 +47,9 @@ public class TopicController {
     public ResponseEntity updateTopic(@RequestBody @Valid TopicUpdateData topicUpdateData) {
         Topic topic = topicRepository.getReferenceById(topicUpdateData.id());
         topic.updateTopic(topicUpdateData);
-        return ResponseEntity.ok(new TopicResponseData(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getCreationDate(), topic.getStatus()));
+        return ResponseEntity.ok(new TopicResponseData(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getCreationDate(), topic.getStatus(), topic.getUser().getId()));
     }
-//
-    // DELETE LOGICO
+
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity deactivateTopic(@PathVariable Long id) {
@@ -57,7 +61,7 @@ public class TopicController {
     @GetMapping("/{id}")
     public ResponseEntity<TopicResponseData> topicResponseData(@PathVariable Long id) {
         Topic topic = topicRepository.getReferenceById(id);
-        var topicResponseData = new TopicResponseData(topic.getId(),topic.getTitle(),topic.getMessage(), topic.getCreationDate(), topic.getStatus());
+        var topicResponseData = new TopicResponseData(topic.getId(), topic.getTitle(), topic.getMessage(), topic.getCreationDate(), topic.getStatus(), topic.getUser().getId());
         return ResponseEntity.ok(topicResponseData);
     }
 

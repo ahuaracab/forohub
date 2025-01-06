@@ -4,5 +4,7 @@ CREATE TABLE topics (
     message varchar(255) not null,
     creation_date datetime not null,
     status tinyint not null,
-    primary key (id)
+    user_id bigint not null,
+    primary key (id),
+    foreign key (user_id) references users(id)
 );

@@ -29,17 +29,13 @@ public class AuthenticationController {
     public ResponseEntity authenticateUser(@RequestBody @Valid UserAuthenticationData userAuthenticationData) {
         Authentication authenticationRequest = new UsernamePasswordAuthenticationToken(userAuthenticationData.login(),
                 userAuthenticationData.password());
-        System.out.println("authenticationRequest: " + authenticationRequest);
         Authentication authenticationResult;
         try {
             authenticationResult = authenticationManager.authenticate(authenticationRequest);
-            System.out.println("authenticationResult: " + authenticationResult);
         } catch (Exception e) {
-            System.out.println("Error during authentication: " + e.getMessage());
             return ResponseEntity.status(401).body(null);
         }
         var jwtToken = jwtTokenService.generateToken((User) authenticationResult.getPrincipal());
-        System.out.println("jwtToken: " + jwtToken);
         return ResponseEntity.ok(new JwtTokenData(jwtToken));
     }
 

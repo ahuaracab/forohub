@@ -1,5 +1,6 @@
 package com.qamaniatic.forohub.domain.topic;
 
+import com.qamaniatic.forohub.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -23,9 +24,14 @@ public class Topic {
     private LocalDateTime creationDate;
     private Boolean status;
 
-    public Topic(TopicCreateData topicCreateData) {
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public Topic(TopicCreateData topicCreateData, User user) {
         this.title = topicCreateData.title();
         this.message = topicCreateData.message();
+        this.user = user;
     }
 
     @PrePersist

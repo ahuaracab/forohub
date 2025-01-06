@@ -20,11 +20,9 @@ public class JwtTokenService {
     private String apiSecret;
 
     public String generateToken(User user) {
-        System.out.println("este es mi usuario: " + user);
         try {
             Algorithm algorithm = Algorithm.HMAC256(apiSecret);
             Instant expirationDate = generateExpirationDate();
-            System.out.println("Fecha de expiración: " + expirationDate);
             return JWT.create()
                     .withIssuer("forohub")
                     .withSubject(user.getLogin())
@@ -32,7 +30,6 @@ public class JwtTokenService {
                     .withExpiresAt(expirationDate)
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
-            System.out.println("Se ejecuta la excepcion???");
             throw new RuntimeException();
         }
     }
@@ -44,7 +41,7 @@ public class JwtTokenService {
 
         DecodedJWT verifier = null;
         try {
-            Algorithm algorithm = Algorithm.HMAC256(apiSecret); // validando firma
+            Algorithm algorithm = Algorithm.HMAC256(apiSecret);
             verifier = JWT.require(algorithm)
                     .withIssuer("forohub")
                     .build()

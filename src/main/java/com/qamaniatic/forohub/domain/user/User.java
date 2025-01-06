@@ -1,5 +1,6 @@
 package com.qamaniatic.forohub.domain.user;
 
+import com.qamaniatic.forohub.domain.topic.Topic;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -26,6 +27,8 @@ public class User implements UserDetails {
     private String login;
     private String password;
 
+    @OneToMany(mappedBy = "user")
+    private List<Topic> topics;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

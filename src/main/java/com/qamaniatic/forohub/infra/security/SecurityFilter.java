@@ -24,23 +24,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("Se inicia el filtro");
         if (request.getRequestURI().equals("/login") && request.getMethod().equals("POST")) {
-            System.out.println("Devuelvo request y response de mi filterChain");
-
-            // Imprimir detalles del request
-            System.out.println("Request URI: " + request.getRequestURI());
-            System.out.println("Request Method: " + request.getMethod());
-            System.out.println("Request Headers:");
-            request.getHeaderNames().asIterator().forEachRemaining(header ->
-                    System.out.println(header + ": " + request.getHeader(header)));
-
-            // Imprimir detalles del response
-            System.out.println("Response Status: " + response.getStatus());
-            System.out.println("Response Headers:");
-            response.getHeaderNames().forEach(header ->
-                    System.out.println(header + ": " + response.getHeader(header)));
-
             filterChain.doFilter(request, response);
             return;
         }
