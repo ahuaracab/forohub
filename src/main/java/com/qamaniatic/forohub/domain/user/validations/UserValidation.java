@@ -1,7 +1,7 @@
-package com.qamaniatic.forohub.domain.topic.validations;
+package com.qamaniatic.forohub.domain.user.validations;
 
-import com.qamaniatic.forohub.domain.topic.TopicCreateData;
+import com.qamaniatic.forohub.domain.user.UserRegisterData;
 
-public interface TopicValidation {
-    void validate(TopicCreateData data);
+public interface UserValidation {
+    void validate(UserRegisterData data);
 }
