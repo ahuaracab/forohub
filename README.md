@@ -104,7 +104,7 @@ Se realizan las siguientes validaciones de reglas de negocio para el endpoint `/
 `El status "true" es activo y el "false" es inactivo.`
 
 ## Documentación de la API 📄
-La documentación completa de la API está disponible a través de Swagger en http://localhost:8080/swagger-ui/index.html.
+La documentación completa de la API estará disponible en http://localhost:8080/swagger-ui/index.html luego de desplegar localmente la API.
 
 ![search_books_by_title](assets/img/swagger_1.png)
 ![search_books_by_title](assets/img/swagger_2.png)
