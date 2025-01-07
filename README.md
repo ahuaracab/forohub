@@ -52,6 +52,8 @@ Endpoint `/login` para que los usuarios inicien sesión y obtengan un token JWT.
 
 Ingresa el token en donde dice Authorize para que sea consumido por todos los endpoints.
 
+![list_registered_books](assets/img/auth.gif)
+
 ### CRUD de tópico 📝
 Endpoint `/topics` que permite a los usuarios crear, leer, actualizar y eliminar tópicos en el foro.
 
